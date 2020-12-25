@@ -1,31 +1,38 @@
 from turtle import Turtle, Screen
+import random 
 
-harry = Turtle()
+is_race_on = False
 screen = Screen()
+screen.setup(width=500,height=400)
+user_bet = screen.textinput(title="make your bet",prompt="which turtle will win the race? enter a color: ")
+colors = ["red","orange","yellow","green","blue","purple"]
+y_positions = [-70,-40,-10,20,50,80]
+all_turtles = []
 
-def move_forwards():
-    harry.forward(10)
+for turtle_index in range(0,6):
+    new_turtle = Turtle(shape="turtle")
+    new_turtle.color(colors[turtle_index])
+    new_turtle.penup()
+    new_turtle.goto(x=-230,y=y_positions[turtle_index])
+    all_turtles.append(new_turtle)
 
-def move_backwards():
-    harry.forward(10)
+if user_bet:
+    is_race_on = True
 
-def move_counter_clockwise():
-    new_heading = harry.heading() + 10
-    harry.setheading(new_heading)
+while is_race_on:
 
-def move_clockwise():
-    new_heading = harry.heading() - 10
-    harry.setheading(new_heading)
+    for turtle in all_turtles:
 
-def clear():
-    harry.clear()
-    harry.penup()
-    harry.home()
-    harry.pendown()
+        if turtle.xcor() > 230:
+            is_race_on = False
+            winning_color = turtle.pencolor()
+            if winning_color == user_bet:
+                print(f"you've won! the {winning_color} turtle is the winner!")
+            else:
+                print(f"you've lost! the {winning_color} turtle is the winner!")
 
-screen.listen()
-screen.onkey(key="w", fun=move_forwards)
-screen.onkey(key="s", fun=move_backwards)
-screen.onkey(key="a", fun=move_counter_clockwise)
-screen.onkey(key="c", fun=clear)
+
+        rand_distance = random.randint(0,10)
+        turtle.forward(rand_distance)
+
 screen.exitonclick()
